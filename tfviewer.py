@@ -171,7 +171,7 @@ def get_image(key):
   img = images[key]
   img_buffer = io.BytesIO(img)
   return send_file(img_buffer,
-                   download_name=str(key)+'.jpeg',
+                   download_name=str(key)+'.jpeg', ## Checged to download_name to support latest flask version
                    mimetype='image/jpg')
 
 @app.after_request

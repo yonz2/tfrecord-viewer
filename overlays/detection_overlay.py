@@ -99,7 +99,7 @@ class DetectionOverlay:
       label, xmin, xmax, ymin, ymax = self.bboxes_to_pixels(bbox, width, height)
       draw.rectangle([xmin, ymin, xmax, ymax], outline=self.bbox_color(label))
 
-      # w, h = self.font.getsize(label)
+      # w, h = self.font.getsize(label) --> getsize is depricated, replace with getbbox
       # Use getbbox to get the bounding box of the text
       bbox_label = self.font.getbbox(label)
       w, h = bbox_label[2] - bbox_label[0], bbox_label[3] - bbox_label[1]
