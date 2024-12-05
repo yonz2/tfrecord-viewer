@@ -171,20 +171,19 @@ def get_image(key):
   img = images[key]
   img_buffer = io.BytesIO(img)
   return send_file(img_buffer,
-                   attachment_filename=str(key)+'.jpeg',
+                   download_name=str(key)+'.jpeg',
                    mimetype='image/jpg')
 
 @app.after_request
 def add_header(r):
-  """
-  Add headers to disable Caching,
-  (So that images with the same index in different TFRecords are displayed correctly.)
-  """
-  r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-  r.headers["Pragma"] = "no-cache"
-  r.headers["Expires"] = "0"
-  r.headers['Cache-Control'] = 'public, max-age=0'
-  return r
+    """
+    Add headers to disable caching,
+    ensuring images with the same index in different TFRecords are displayed correctly.
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    return r
 
 
 if __name__ == "__main__":

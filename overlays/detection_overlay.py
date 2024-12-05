@@ -1,17 +1,20 @@
 import io
+import os
 from PIL import Image, ImageDraw, ImageFont
 
 
 default_color = 'blue'
 highlight_color = 'red'
 
+font_path = os.path.join(os.path.dirname(__file__) ,"..", "fonts", "OpenSans-Regular.ttf")
 
+print (font_path)
 class DetectionOverlay:
   
   def __init__(self, args):
     self.args = args
     self.labels_to_highlight = args.labels_to_highlight.split(";")
-    self.font = ImageFont.truetype("./fonts/OpenSans-Regular.ttf", 12)
+    self.font = ImageFont.truetype(font_path, 12)
 
   def apply_overlay(self, image_bytes, example):
     """Apply annotation overlay over input image.
@@ -96,7 +99,11 @@ class DetectionOverlay:
       label, xmin, xmax, ymin, ymax = self.bboxes_to_pixels(bbox, width, height)
       draw.rectangle([xmin, ymin, xmax, ymax], outline=self.bbox_color(label))
 
-      w, h = self.font.getsize(label)
+      # w, h = self.font.getsize(label)
+      # Use getbbox to get the bounding box of the text
+      bbox_label = self.font.getbbox(label)
+      w, h = bbox_label[2] - bbox_label[0], bbox_label[3] - bbox_label[1]
+
       draw.rectangle((xmin, ymin, xmin + w + 4, ymin + h), fill="white")
 
       draw.text((xmin+4, ymin), label, fill=self.bbox_color(label), font=self.font)
